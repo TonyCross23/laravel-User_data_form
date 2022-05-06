@@ -48,6 +48,11 @@ class CustomerController extends Controller
         return view ('customer.edit')->with(['customer' => $data]);
     }
 
+    //customer data update
+    public function update ($id) {
+        dd($id);
+    }
+
     //request customer data
     private function getCustomerData($request){
 

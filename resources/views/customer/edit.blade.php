@@ -40,11 +40,28 @@
 
                          <div class="my-3">
                              <label for="">Gender</label> <br>
-                             <select name="gender" id="">
-                               <option value="empty">Chose Options....</option>
+                             <select name="gender" class="form-control">
+                               @if($customer->gender == 1)
+                                    <option value="empty">Chose Options....</option>
+                                    <option value="1"selected>Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="0">Other</option>
+                                 @elseif($customer->gender == 2)
+                                    <option value="empty">Chose Options....</option>
+                                    <option value="1">Male</option>
+                                    <option value="2" selected>Female</option>
+                                    <option value="0">Other</option>
+                                 @elseif($customer->gender == 0)
+                                    <option value="empty">Chose Options....</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="0" selected>Other</option> 
+                                @else
+                                <option value="empty" selected>Chose Options....</option>
                                <option value="1">Male</option>
                                <option value="2">Female</option>
                                <option value="0">Other</option>
+                               @endif 
                            </select>
                          </div>
                          <div class="my-3 float-end">

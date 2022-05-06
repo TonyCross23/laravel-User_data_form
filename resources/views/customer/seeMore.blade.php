@@ -34,7 +34,18 @@
                          </div>
 
                          <div class="my-3">
-                             <label for="">Gender</label> : <label for="">{{$customer[0]['gender']}}</label>
+                             <label for="">Gender</label> :
+
+                             <label for="">
+                                 @if($customer[0]['gender'] == 1)
+                                 Male 
+                                 @elseif($customer[0]['gender'] == 2)
+                                 Female 
+                                 @elseif($customer[0]['gender'] == 0)
+                                 Others 
+                                 @endif 
+                             </label>
+
                          </div>
                     </div>
                     <div class="card-footer">
