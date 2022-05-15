@@ -19,7 +19,7 @@ return new class extends Migration
             $table->char('email','30');
             $table->longText('address');
             $table->boolean('gender');
-            $table->timestamp('date_of_birth');
+            $table->date('date_of_birth');
             $table->char('phone','15');
           
             $table->timestamps();

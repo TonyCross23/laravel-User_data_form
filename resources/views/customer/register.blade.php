@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('MyLayOut.app')
 
 @section('content')
     <div class="row">
@@ -22,37 +22,55 @@
                        @csrf
                        <div class="my-2">
                            <label for="">Name</label>
-                           <input type="text" name="name" class="form-control">
+                           <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                           @if($errors->has('name'))
+                           <p class="text-danger">{{ $errors->first('name') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">
                            <label for="">Email</label>
-                           <input type="email" name="email" class="form-control">
+                           <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                           @if($errors->has('email'))
+                           <p class="text-danger">{{ $errors->first('email') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">
                            <label for="">Phone Number</label>
-                           <input type="number" name="phoneNumber" class="form-control">
+                           <input type="number" name="phone" class="form-control" value="{{ old('phone') }}">
+                           @if($errors->has('phone'))
+                           <p class="text-danger">{{ $errors->first('phone') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">
                            <label for="">Date Of Birth</label>
-                           <input type="date" name="dob" class="form-control">
+                           <input type="date" name="dob" class="form-control" value="{{ old('dob') }}">
+                           @if($errors->has('dob'))
+                           <p class="text-danger">{{ $errors->first('dob') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">
                            <label for="">Address</label>
-                           <textarea name="address" id="" cols="30" rows="5" class="form-control"></textarea>
+                           <textarea name="address" id="" cols="30" rows="5" class="form-control">{{ old('address') }}</textarea>
+                           @if($errors->has('address'))
+                           <p class="text-danger">{{ $errors->first('address') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">
                            <label for="">Gender</label> <br>
-                           <select name="gender" id="">
-                               <option value="empty">Chose Options....</option>
+                           <select name="gender" id="" value="{{ old('gender') }}">
+                               <option value="">Chose Options....</option>
                                <option value="1">Male</option>
                                <option value="2">Female</option>
                                <option value="0">Other</option>
                            </select>
+                           @if($errors->has('gender'))
+                           <p class="text-danger">{{ $errors->first('gender') }}</p>
+                           @endif
                        </div>
 
                        <div class="my-2">

@@ -30,4 +30,15 @@ Route::group(['prefix' => 'customer'],function (){
         Route::get('delete/{id}', 'CustomerController@delete')->name('customer#delete');
         Route::get('edit/{id}','CustomerController@edit')->name('customer#edit');   
         Route::post('update/{id}','CustomerController@update')->name('customer#update'); 
+        Route::get('confirm','CustomerController@confirm')->name('customer#confirm');
+        Route::get('realUpdate','CustomerController@realUpdate')->name('customer#realUpdate');
     });
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

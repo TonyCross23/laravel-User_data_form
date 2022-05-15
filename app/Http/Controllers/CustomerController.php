@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -13,6 +15,29 @@ class CustomerController extends Controller
     }
     //create customer account
     public function create (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+             'name' => 'required',
+             'email' => 'required',
+             'phone' => 'required',
+             'address' => 'required',
+             'dob' => 'required',
+             'gender' => 'required',
+
+        ],[
+            'name.required' => "Name Required",
+            'email.required' => "email Required",
+            'phone.required' => "phone Required",
+            'address.required' => "address Required",
+            'dob.required' => "date of birth Required",
+            'gender.required' => "gender Required",
+        ]);
+ 
+        if ($validator->fails()) {
+            return back()
+                        ->withErrors($validator)
+                        ->withInput();
+         }
 
            $data = $this->getCustomerData($request);
            //MVC => modal viwe controller
@@ -25,7 +50,7 @@ class CustomerController extends Controller
     }
     //customer list blade
     public function list () {
-        $data = Customer::get(); //object
+        $data = Customer::paginate(10); //object
       
         return view ('customer.list')->with(['customer'=> $data]);
     }
@@ -49,9 +74,60 @@ class CustomerController extends Controller
     }
 
     //customer data update
-    public function update ($id) {
-        dd($id);
+    public function update ($id, Request $request) {
+
+         //validation message customer data
+         $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'dob' => 'required',
+            'gender' => 'required',
+
+       ],[
+           'name.required' => "Name Required",
+           'email.required' => "email Required",
+           'phone.required' => "phone Required",
+           'address.required' => "address Required",
+           'dob.required' => "date of birth Required",
+           'gender.required' => "gender Required",
+       ]);
+
+       if ($validator->fails()) {
+           return back()
+                       ->withErrors($validator)
+                       ->withInput();
+        }
+        $updateData = $this->getCustomerData($request);
+        $updateData ['id'] = $id;
+
+        Session::put('CUSTOMER_DATA', $updateData);
+        return redirect()->route('customer#confirm');  
+        // Customer::where('customer_id',$id)->update($updateData);
+        // return redirect()->route('customer#list')->with(['updateSuccess' => 'Customer Data Updated!']);
+
     }
+    //customer confirm page
+    public function confirm () {
+        $data =  Session::get('CUSTOMER_DATA');
+        return view ('customer.confirm')->with(['customer' => $data]);
+    }
+
+
+    //customer real Update
+    public function realUpdate () {
+        $data = Session::get('CUSTOMER_DATA');
+        $id = $data['id'];
+        unset($data['id']); // remove id in array
+        Session::forget('CUSTOMER_DATA'); //session deleate
+        
+        Customer::where('customer_id',$id)->update($data);
+        return redirect ()->route('customer#list')->with(['updateSuccess' => 'Customer Updated!']);
+
+    }
+
+
 
     //request customer data
     private function getCustomerData($request){
@@ -59,7 +135,7 @@ class CustomerController extends Controller
         return [
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phoneNumber,
+            'phone' => $request->phone,
             'date_of_birth' =>$request->dob,
             'address' => $request->address,
             'gender' => $request->gender,
